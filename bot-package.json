@@ -1,0 +1,12 @@
+{
+  "name": "vaqueiro-bot",
+  "version": "1.0.0",
+  "description": "Vaqueiro Bot Discord 🤠",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
+}
