@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Termos de Serviço — Architect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #f4f0ff;
+      --surface:   #ffffff;
+      --purple:    #7c3aed;
+      --purple-lt: #ede9fe;
+      --purple-md: #c4b5fd;
+      --text:      #1e1033;
+      --muted:     #6b7280;
+      --border:    #e5e0f8;
+      --accent:    #5b21b6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── Background decoration ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #c4b5fd44 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; left: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #ddd6fe33 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244, 240, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--purple);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-name span { color: var(--purple); }
+
+    .header-badge {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--purple);
+      background: var(--purple-lt);
+      border: 1px solid var(--purple-md);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 80px 40px 60px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple);
+      background: var(--purple-lt);
+      border: 1px solid var(--purple-md);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 6vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--purple);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 300;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-meta strong { color: var(--text); }
+
+    /* ── Divider ── */
+    .divider {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 40px;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Content ── */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+      display: grid;
+      gap: 48px;
+    }
+
+    /* ── Section ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 48px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+
+    .section:hover {
+      box-shadow: 0 8px 40px rgba(124, 58, 237, 0.08);
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--purple), var(--purple-md));
+      border-radius: 4px 0 0 4px;
+    }
+
+    .section-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .section p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .section ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    .section ul li::before {
+      content: '◆';
+      color: var(--purple);
+      font-size: 8px;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .highlight-box {
+      background: var(--purple-lt);
+      border: 1px solid var(--purple-md);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: var(--text);
+      color: #9ca3af;
+      text-align: center;
+      padding: 48px 40px;
+    }
+
+    footer .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    footer .footer-logo span { color: var(--purple-md); }
+
+    footer p { font-size: 14px; line-height: 1.8; }
+
+    footer a {
+      color: var(--purple-md);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    footer .footer-divider {
+      border: none;
+      border-top: 1px solid #374151;
+      margin: 28px auto;
+      max-width: 400px;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero { animation: fadeUp 0.6s ease both; }
+    .section:nth-child(1)  { animation: fadeUp 0.5s 0.05s ease both; }
+    .section:nth-child(2)  { animation: fadeUp 0.5s 0.10s ease both; }
+    .section:nth-child(3)  { animation: fadeUp 0.5s 0.15s ease both; }
+    .section:nth-child(4)  { animation: fadeUp 0.5s 0.20s ease both; }
+    .section:nth-child(5)  { animation: fadeUp 0.5s 0.25s ease both; }
+    .section:nth-child(6)  { animation: fadeUp 0.5s 0.30s ease both; }
+    .section:nth-child(7)  { animation: fadeUp 0.5s 0.35s ease both; }
+    .section:nth-child(8)  { animation: fadeUp 0.5s 0.40s ease both; }
+    .section:nth-child(9)  { animation: fadeUp 0.5s 0.45s ease both; }
+    .section:nth-child(10) { animation: fadeUp 0.5s 0.50s ease both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      header { padding: 14px 20px; }
+      .hero  { padding: 60px 20px 40px; }
+      .content { padding: 40px 20px 80px; }
+      .section { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-icon">🏗️</div>
+      <span class="logo-name">Architect<span>.alz</span></span>
+    </a>
+    <span class="header-badge">Termos de Serviço</span>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="hero-tag">Documentação Legal</span>
+    <h1>Termos de <em>Serviço</em></h1>
+    <p>Ao utilizar o Architect, você concorda com os termos descritos neste documento. Leia com atenção antes de continuar.</p>
+    <div class="hero-meta">
+      <span>📅 <strong>Última atualização:</strong> Março de 2026</span>
+      <span>📦 <strong>Versão:</strong> v1.5.0</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- 1 -->
+    <div class="section">
+      <span class="section-num">01 — Aceitação</span>
+      <h2>Aceitação dos Termos</h2>
+      <p>Ao adicionar o Architect ao seu servidor Discord ou utilizar qualquer um de seus comandos, você declara que leu, compreendeu e concorda com estes Termos de Serviço e com nossa Política de Privacidade.</p>
+      <p>Se você não concorda com qualquer parte destes termos, não utilize o bot.</p>
+      <div class="highlight-box">
+        ◆ O uso contínuo do Architect implica na aceitação automática de quaisquer atualizações futuras nestes termos.
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="section">
+      <span class="section-num">02 — Descrição</span>
+      <h2>Sobre o Architect</h2>
+      <p>O Architect é um bot para Discord desenvolvido por <strong>Alzhayds</strong>, que oferece as seguintes funcionalidades:</p>
+      <ul>
+        <li>Criação automatizada de servidores Discord utilizando Inteligência Artificial</li>
+        <li>Backup e restauração completa de estruturas de servidores</li>
+        <li>Sistema de proteção anti-nuke em tempo real</li>
+        <li>Templates prontos para diferentes tipos de comunidade</li>
+        <li>Gerenciamento de canais e cargos individualmente</li>
+      </ul>
+    </div>
+
+    <!-- 3 -->
+    <div class="section">
+      <span class="section-num">03 — Uso Permitido</span>
+      <h2>Uso Aceitável</h2>
+      <p>Você concorda em utilizar o Architect apenas para fins legítimos e em conformidade com os Termos de Serviço do Discord. É permitido:</p>
+      <ul>
+        <li>Criar e organizar servidores Discord para comunidades legítimas</li>
+        <li>Fazer backups da estrutura do seu próprio servidor</li>
+        <li>Utilizar os templates e comandos disponíveis conforme sua finalidade</li>
+        <li>Compartilhar o bot com outros usuários de forma orgânica</li>
+      </ul>
+    </div>
+
+    <!-- 4 -->
+    <div class="section">
+      <span class="section-num">04 — Uso Proibido</span>
+      <h2>Restrições de Uso</h2>
+      <p>É estritamente proibido utilizar o Architect para:</p>
+      <ul>
+        <li>Nukar, destruir ou prejudicar servidores de terceiros sem consentimento</li>
+        <li>Criar servidores com conteúdo ilegal, discriminatório ou que viole as diretrizes do Discord</li>
+        <li>Tentar contornar, hackear ou explorar falhas no bot</li>
+        <li>Utilizar o bot para fins de spam, scam ou phishing</li>
+        <li>Revender, copiar ou redistribuir o código do Architect sem autorização</li>
+        <li>Usar o bot para assediar, ameaçar ou prejudicar outros usuários</li>
+      </ul>
+      <div class="highlight-box">
+        ◆ Violações resultarão no banimento permanente do acesso ao Architect, sem aviso prévio.
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="section">
+      <span class="section-num">05 — Privacidade</span>
+      <h2>Dados Coletados</h2>
+      <p>O Architect coleta e armazena os seguintes dados estritamente necessários para seu funcionamento:</p>
+      <ul>
+        <li><strong>ID do servidor (Guild ID)</strong> — para identificar e salvar backups</li>
+        <li><strong>Estrutura do servidor</strong> — nomes de canais, cargos e categorias para o sistema de backup</li>
+        <li><strong>Mensagens salvas</strong> — últimas 50 mensagens por canal, apenas quando o /backup é executado</li>
+      </ul>
+      <p>Não coletamos senhas, tokens, dados pessoais dos membros ou informações de pagamento. Os dados são armazenados localmente e utilizados exclusivamente para as funcionalidades do bot.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="section">
+      <span class="section-num">06 — Responsabilidade</span>
+      <h2>Limitação de Responsabilidade</h2>
+      <p>O Architect é fornecido "como está", sem garantias expressas ou implícitas. A Alzhayds não se responsabiliza por:</p>
+      <ul>
+        <li>Perda de dados decorrente de falhas técnicas ou interrupções no serviço</li>
+        <li>Danos causados pelo uso indevido do bot por terceiros</li>
+        <li>Indisponibilidade temporária do serviço por manutenção ou problemas externos</li>
+        <li>Ações tomadas pela API do Discord que afetem o funcionamento do bot</li>
+      </ul>
+      <div class="highlight-box">
+        ◆ Recomendamos sempre realizar backups regulares e não depender exclusivamente do Architect para preservar dados críticos.
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="section">
+      <span class="section-num">07 — Disponibilidade</span>
+      <h2>Continuidade do Serviço</h2>
+      <p>Nos esforçamos para manter o Architect disponível 24 horas por dia, 7 dias por semana. No entanto, reservamos o direito de:</p>
+      <ul>
+        <li>Realizar manutenções programadas ou emergenciais a qualquer momento</li>
+        <li>Atualizar, modificar ou remover funcionalidades sem aviso prévio</li>
+        <li>Encerrar o serviço do bot a qualquer momento, com aviso prévio quando possível</li>
+      </ul>
+    </div>
+
+    <!-- 8 -->
+    <div class="section">
+      <span class="section-num">08 — Propriedade</span>
+      <h2>Propriedade Intelectual</h2>
+      <p>Todo o código, design, lógica e identidade visual do Architect são de propriedade exclusiva da <strong>Alzhayds</strong>. É proibido:</p>
+      <ul>
+        <li>Copiar, modificar ou redistribuir o código sem autorização escrita</li>
+        <li>Criar bots derivados baseados no Architect sem permissão</li>
+        <li>Utilizar o nome, logo ou identidade do Architect para fins comerciais sem consentimento</li>
+      </ul>
+    </div>
+
+    <!-- 9 -->
+    <div class="section">
+      <span class="section-num">09 — Alterações</span>
+      <h2>Atualizações nos Termos</h2>
+      <p>A Alzhayds reserva o direito de modificar estes Termos de Serviço a qualquer momento. Alterações significativas serão comunicadas através do servidor oficial de suporte do Architect.</p>
+      <p>O uso continuado do bot após a publicação de novas versões dos termos constitui aceitação das mudanças.</p>
+    </div>
+
+    <!-- 10 -->
+    <div class="section">
+      <span class="section-num">10 — Contato</span>
+      <h2>Suporte e Contato</h2>
+      <p>Para dúvidas, sugestões ou reportar violações destes termos, entre em contato através dos seguintes canais:</p>
+      <ul>
+        <li>Servidor oficial de suporte do Architect no Discord</li>
+        <li>Comando <strong>/help</strong> dentro do próprio bot para orientações gerais</li>
+      </ul>
+      <div class="highlight-box">
+        ◆ Desenvolvido com dedicação por <strong>Alzhayds</strong> — Create. Protect. Restore.
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">Architect<span>.alz</span></div>
+    <p>Desenvolvido por <a href="#">Alzhayds</a> · Versão v1.5.0</p>
+    <hr class="footer-divider" />
+    <p>© 2026 Architect. Todos os direitos reservados.<br />
+    Este documento está em conformidade com os <a href="https://discord.com/terms" target="_blank">Termos de Serviço do Discord</a>.</p>
+  </footer>
+
+</body>
+</html>
