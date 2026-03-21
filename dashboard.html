@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architect Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#0d0b14;--surface:#13101f;--card:#1a1628;--border:#2a2440;
+      --purple:#8b5cf6;--purple-d:#6d28d9;--purple-l:#a78bfa;--glow:rgba(139,92,246,0.15);
+      --text:#e2dff0;--muted:#6b6585;--green:#34d399;--red:#f87171;--yellow:#fbbf24;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(139,92,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    body::after{content:'';position:fixed;top:-300px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(139,92,246,0.12) 0%,transparent 65%);pointer-events:none;z-index:0}
+    .app{position:relative;z-index:1;display:flex;min-height:100vh}
+    .sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+    .sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--purple-d),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow)}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.5px}
+    .logo-text span{color:var(--purple-l)}
+    .sidebar-version{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto}
+    .server-select{padding:16px;border-bottom:1px solid var(--border)}
+    .server-select label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+    .server-select select{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;outline:none}
+    .server-select select:focus{border-color:var(--purple)}
+    .sidebar-nav{padding:12px 8px;flex:1}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--muted);transition:all 0.15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+    .nav-item:hover{background:var(--card);color:var(--text)}
+    .nav-item.active{background:var(--glow);color:var(--purple-l);border:1px solid rgba(139,92,246,0.2)}
+    .nav-item .nav-icon{font-size:16px;width:20px;text-align:center}
+    .sidebar-user{padding:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--purple-d);overflow:hidden;flex-shrink:0}
+    .user-avatar img{width:100%;height:100%;object-fit:cover}
+    .user-info{flex:1;min-width:0}
+    .user-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .user-tag{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+    .logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px;border-radius:4px;transition:color 0.15s}
+    .logout-btn:hover{color:var(--red)}
+    .main{margin-left:240px;flex:1;padding:32px;min-height:100vh}
+    .page{display:none}
+    .page.active{display:block;animation:fadeIn 0.3s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .page-header{margin-bottom:28px}
+    .page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.5px;margin-bottom:4px}
+    .page-sub{color:var(--muted);font-size:14px}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:border-color 0.2s}
+    .stat-card:hover{border-color:var(--purple)}
+    .stat-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:var(--glow);border-radius:0 14px 0 60px}
+    .stat-icon{font-size:22px;margin-bottom:12px}
+    .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-1px;color:var(--purple-l)}
+    .stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px}
+    .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{text-align:left;padding:10px 14px;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+    td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(139,92,246,0.04)}
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:600}
+    .badge-green{background:rgba(52,211,153,0.1);color:var(--green);border:1px solid rgba(52,211,153,0.2)}
+    .badge-red{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.2)}
+    .badge-yellow{background:rgba(251,191,36,0.1);color:var(--yellow);border:1px solid rgba(251,191,36,0.2)}
+    .badge-purple{background:var(--glow);color:var(--purple-l);border:1px solid rgba(139,92,246,0.2)}
+    .role-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;margin-right:6px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+    .btn-primary{background:var(--purple);color:#fff}
+    .btn-primary:hover{background:var(--purple-d);box-shadow:0 0 20px var(--glow)}
+    .btn-danger{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.2)}
+    .btn-danger:hover{background:rgba(248,113,113,0.2)}
+    .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-ghost:hover{border-color:var(--purple);color:var(--purple-l)}
+    .btn-sm{padding:5px 10px;font-size:12px}
+    .toggle-wrap{display:flex;align-items:center;gap:12px}
+    .toggle{position:relative;width:44px;height:24px;cursor:pointer}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:999px;transition:0.2s}
+    .toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:var(--muted);border-radius:50%;transition:0.2s}
+    .toggle input:checked+.toggle-slider{background:var(--purple)}
+    .toggle input:checked+.toggle-slider::before{transform:translateX(20px);background:#fff}
+    .form-group{margin-bottom:16px}
+    .form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px}
+    .form-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.15s}
+    .form-input:focus{border-color:var(--purple)}
+    .form-select{appearance:none;cursor:pointer}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    #login-page{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:999}
+    .login-box{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center;max-width:420px;width:90%;position:relative;z-index:1;animation:fadeIn 0.5s ease}
+    .login-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--purple-d),var(--purple));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px;box-shadow:0 0 40px var(--glow)}
+    .login-title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-1px;margin-bottom:8px}
+    .login-sub{color:var(--muted);font-size:14px;margin-bottom:32px;line-height:1.6}
+    .btn-discord{display:inline-flex;align-items:center;gap:10px;background:#5865f2;color:#fff;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;font-family:'DM Sans',sans-serif;width:100%;justify-content:center}
+    .btn-discord:hover{background:#4752c4;box-shadow:0 0 30px rgba(88,101,242,0.3);transform:translateY(-1px)}
+    .login-footer{margin-top:24px;font-size:12px;color:var(--muted)}
+    .login-footer a{color:var(--purple-l);text-decoration:none}
+    .backup-info{display:flex;align-items:center;gap:16px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:16px}
+    .backup-icon{font-size:32px}
+    .backup-meta{flex:1}
+    .backup-name{font-weight:600;margin-bottom:4px}
+    .backup-date{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+    .alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .alert-warning{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--yellow)}
+    .alert-success{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);color:var(--green)}
+    .alert-error{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);color:var(--red)}
+    .loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--muted);gap:10px}
+    .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all 0.3s;display:flex;align-items:center;gap:8px}
+    #toast.show{transform:translateY(0);opacity:1}
+    .empty{text-align:center;padding:48px;color:var(--muted)}
+    .empty-icon{font-size:40px;margin-bottom:12px}
+    .empty-title{font-weight:600;margin-bottom:4px;color:var(--text)}
+    @media(max-width:768px){.sidebar{width:200px}.main{margin-left:200px;padding:20px}.form-row{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+
+<div id="login-page">
+  <div class="login-box">
+    <div class="login-logo">🏗️</div>
+    <h1 class="login-title">Architect<span style="color:var(--purple-l)">.alz</span></h1>
+    <p class="login-sub">Gerencie seus servidores com inteligência. Faça login para acessar o Dashboard.</p>
+    <button class="btn-discord" onclick="loginDiscord()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.102 18.079.114 18.1.134 18.114a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Login com Discord
+    </button>
+    <p class="login-footer">Ao continuar você concorda com os <a href="terms.html">Termos de Serviço</a> e <a href="privacy.html">Política de Privacidade</a>.</p>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏗️</div>
+      <span class="logo-text">Arch<span>itect</span></span>
+      <span class="sidebar-version">v1.5.0</span>
+    </div>
+    <div class="server-select">
+      <label>Servidor</label>
+      <select id="server-select" onchange="selectServer(this.value)">
+        <option value="">Selecione...</option>
+      </select>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="navigate('overview',this)"><span class="nav-icon">📊</span> Visão Geral</button>
+      <button class="nav-item" onclick="navigate('roles',this)"><span class="nav-icon">🎭</span> Cargos</button>
+      <button class="nav-item" onclick="navigate('channels',this)"><span class="nav-icon">💬</span> Canais</button>
+      <button class="nav-item" onclick="navigate('backup',this)"><span class="nav-icon">💾</span> Backup</button>
+      <button class="nav-item" onclick="navigate('protection',this)"><span class="nav-icon">🛡️</span> Proteção</button>
+      <button class="nav-item" onclick="navigate('logs',this)"><span class="nav-icon">📋</span> Canal de Logs</button>
+      <button class="nav-item" onclick="navigate('reactionroles',this)"><span class="nav-icon">🎯</span> Reaction Roles</button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar"><img id="user-avatar" src="" alt=""/></div>
+      <div class="user-info">
+        <div class="user-name" id="user-name">—</div>
+        <div class="user-tag" id="user-tag">—</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">✕</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page active" id="page-overview">
+      <div class="page-header"><h1 class="page-title">Visão Geral</h1><p class="page-sub">Estatísticas e status do servidor</p></div>
+      <div class="stats-grid" id="stats-grid"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+      <div class="card"><div class="card-header"><span class="card-title">🔍 Status</span></div><div id="bot-status"><div class="loading"><div class="spinner"></div></div></div></div>
+    </div>
+
+    <div class="page" id="page-roles">
+      <div class="page-header"><h1 class="page-title">Cargos</h1><p class="page-sub">Gerencie os cargos do servidor</p></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">➕ Criar Cargo</span></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="role-name" placeholder="ex: Moderador"/></div>
+          <div class="form-group"><label class="form-label">Cor</label><input class="form-input" id="role-color" type="color" value="#8b5cf6" style="height:42px;padding:4px 8px;cursor:pointer"/></div>
+        </div>
+        <button class="btn btn-primary" onclick="createRole()">➕ Criar Cargo</button>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🎭 Lista de Cargos</span><button class="btn btn-ghost btn-sm" onclick="loadRoles()">🔄</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Cargo</th><th>Membros</th><th>Posição</th><th>Ações</th></tr></thead><tbody id="roles-tbody"><tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-channels">
+      <div class="page-header"><h1 class="page-title">Canais</h1><p class="page-sub">Gerencie os canais do servidor</p></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">➕ Criar Canal</span></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="ch-name" placeholder="ex: geral"/></div>
+          <div class="form-group"><label class="form-label">Tipo</label><select class="form-input form-select" id="ch-type"><option value="text">💬 Texto</option><option value="voice">🔊 Voz</option><option value="forum">📋 Fórum</option><option value="announcement">📢 Announcement</option></select></div>
+        </div>
+        <button class="btn btn-primary" onclick="createChannel()">➕ Criar Canal</button>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">💬 Lista de Canais</span><button class="btn btn-ghost btn-sm" onclick="loadChannels()">🔄</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Canal</th><th>Tipo</th><th>Categoria</th><th>Ações</th></tr></thead><tbody id="channels-tbody"><tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-backup">
+      <div class="page-header"><h1 class="page-title">Backup</h1><p class="page-sub">Salve e restaure a estrutura do servidor</p></div>
+      <div class="card"><div class="card-header"><span class="card-title">💾 Backup Atual</span></div><div id="backup-info"><div class="loading"><div class="spinner"></div></div></div></div>
+      <div class="card"><div class="card-header"><span class="card-title">⚠️ Restaurar</span></div><div class="alert alert-warning">⚠️ Esta ação irá apagar TUDO e restaurar o backup. Irreversível!</div><button class="btn btn-danger" onclick="restoreBackup()">🔄 Restaurar Agora</button></div>
+    </div>
+
+    <div class="page" id="page-protection">
+      <div class="page-header"><h1 class="page-title">Proteção Anti-Nuke</h1><p class="page-sub">Monitore seu servidor em tempo real</p></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🛡️ Status</span></div>
+        <div class="toggle-wrap" style="margin-bottom:16px">
+          <label class="toggle"><input type="checkbox" id="protection-toggle" onchange="toggleProtection(this.checked)"/><span class="toggle-slider"></span></label>
+          <div><div id="protection-label" style="font-weight:600">Carregando...</div><div style="font-size:12px;color:var(--muted)">Detecta +3 deleções em 10 segundos</div></div>
+        </div>
+        <div class="alert alert-warning">⚠️ Crie um backup primeiro com /backup no Discord.</div>
+      </div>
+    </div>
+
+    <div class="page" id="page-logs">
+      <div class="page-header"><h1 class="page-title">Canal de Logs</h1><p class="page-sub">Onde as ações serão registradas</p></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📋 Configurar</span></div>
+        <div class="form-group"><label class="form-label">Canal</label><select class="form-input form-select" id="log-channel-select"><option value="">Carregando...</option></select></div>
+        <button class="btn btn-primary" onclick="saveLogChannel()">💾 Salvar</button>
+      </div>
+    </div>
+
+    <div class="page" id="page-reactionroles">
+      <div class="page-header"><h1 class="page-title">Reaction Roles</h1><p class="page-sub">Cargos automáticos por reação</p></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">➕ Criar</span></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Canal</label><select class="form-input form-select" id="rr-channel"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label class="form-label">Cargo</label><select class="form-input form-select" id="rr-role"><option value="">Selecione...</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Emoji</label><input class="form-input" id="rr-emoji" placeholder="ex: 🎮"/></div>
+          <div class="form-group"><label class="form-label">Descrição</label><input class="form-input" id="rr-desc" placeholder="ex: Reaja para receber o cargo!"/></div>
+        </div>
+        <button class="btn btn-primary" onclick="createReactionRole()">✅ Criar</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API_URL   = 'http://87.106.62.92:15111';
+const API_KEY   = 'architect-secret-key';
+const CLIENT_ID = 'SEU_CLIENT_ID_AQUI';
+const OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(API_URL+'/auth/callback')}&response_type=code&scope=identify+guilds`;
+
+let state = { user:null, guilds:[], selectedGuild:null };
+let guildData = {};
+
+function loginDiscord() {
+  if(CLIENT_ID==='SEU_CLIENT_ID_AQUI'){toast('⚠️ Configure o CLIENT_ID!','warning');return;}
+  window.location.href = OAUTH_URL;
+}
+
+function logout() {
+  localStorage.removeItem('arch_auth');
+  state={user:null,guilds:[],selectedGuild:null};
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-page').style.display='flex';
+}
+
+function initAuth() {
+  const params = new URLSearchParams(window.location.search);
+  const authParam = params.get('auth');
+  if(authParam){
+    try{
+      const data=JSON.parse(decodeURIComponent(authParam));
+      state.user=data.user; state.guilds=data.guilds;
+      localStorage.setItem('arch_auth',JSON.stringify({user:data.user,guilds:data.guilds}));
+      window.history.replaceState({},'','/');
+    }catch(e){}
+  }
+  const saved=localStorage.getItem('arch_auth');
+  if(saved&&!state.user){
+    try{const d=JSON.parse(saved);state.user=d.user;state.guilds=d.guilds;}catch(e){}
+  }
+  if(state.user) showApp();
+}
+
+function showApp() {
+  document.getElementById('login-page').style.display='none';
+  document.getElementById('app').style.display='flex';
+  const u=state.user;
+  document.getElementById('user-name').textContent=u.username;
+  document.getElementById('user-tag').textContent=`#${u.discriminator||'0000'}`;
+  if(u.avatar) document.getElementById('user-avatar').src=`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png`;
+  const sel=document.getElementById('server-select');
+  sel.innerHTML='<option value="">Selecione um servidor...</option>';
+  state.guilds.forEach(g=>{const o=document.createElement('option');o.value=g.id;o.textContent=g.name;sel.appendChild(o);});
+  if(state.guilds.length===1){sel.value=state.guilds[0].id;selectServer(state.guilds[0].id);}
+}
+
+async function api(path,method='GET',body=null){
+  const opts={method,headers:{'Authorization':`Bearer ${API_KEY}`,'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(`${API_URL}${path}`,opts);
+  const data=await res.json();
+  if(!res.ok) throw new Error(data.error||'API error');
+  return data;
+}
+
+function navigate(page,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  if(el) el.classList.add('active');
+  if(!state.selectedGuild) return;
+  if(page==='overview')      loadOverview();
+  if(page==='roles')         loadRoles();
+  if(page==='channels')      loadChannels();
+  if(page==='backup')        loadBackup();
+  if(page==='protection')    loadProtection();
+  if(page==='logs')          loadChannelsForSelect('log-channel-select');
+  if(page==='reactionroles'){loadChannelsForSelect('rr-channel');loadRolesForSelect('rr-role');}
+}
+
+function selectServer(guildId){
+  state.selectedGuild=guildId;
+  if(!guildId) return;
+  loadOverview();
+}
+
+async function loadOverview(){
+  if(!state.selectedGuild) return;
+  try{
+    const d=await api(`/api/guild?guildId=${state.selectedGuild}`);
+    guildData=d;
+    document.getElementById('stats-grid').innerHTML=`
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">${d.memberCount}</div><div class="stat-label">Membros</div></div>
+      <div class="stat-card"><div class="stat-icon">🎭</div><div class="stat-value">${d.roleCount}</div><div class="stat-label">Cargos</div></div>
+      <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">${d.textCount}</div><div class="stat-label">Canais Texto</div></div>
+      <div class="stat-card"><div class="stat-icon">🔊</div><div class="stat-value">${d.voiceCount}</div><div class="stat-label">Canais Voz</div></div>
+      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${d.forumCount}</div><div class="stat-label">Fóruns</div></div>
+      <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">${d.protection?'✅':'❌'}</div><div class="stat-label">Proteção</div></div>
+    `;
+    document.getElementById('bot-status').innerHTML=`
+      <div style="display:grid;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--surface);border-radius:8px"><span>💾 Backup</span>${d.hasBackup?`<span class="badge badge-green">✅ ${new Date(d.backupDate).toLocaleDateString('pt-BR')}</span>`:'<span class="badge badge-red">❌ Sem backup</span>'}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--surface);border-radius:8px"><span>🛡️ Anti-Nuke</span>${d.protection?'<span class="badge badge-green">✅ Ativo</span>':'<span class="badge badge-yellow">⚠️ Inativo</span>'}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--surface);border-radius:8px"><span>🤖 Bot</span><span class="badge badge-green">✅ Online</span></div>
+      </div>
+    `;
+  }catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function loadRoles(){
+  if(!state.selectedGuild) return;
+  const tbody=document.getElementById('roles-tbody');
+  tbody.innerHTML='<tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr>';
+  try{
+    const roles=await api(`/api/roles?guildId=${state.selectedGuild}`);
+    if(!roles.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty"><div class="empty-icon">🎭</div><div class="empty-title">Nenhum cargo</div></div></td></tr>';return;}
+    tbody.innerHTML=roles.map(r=>`<tr><td><span class="role-dot" style="background:${r.color}"></span>${r.name}</td><td><span class="badge badge-purple">${r.memberCount}</span></td><td>${r.position}</td><td><button class="btn btn-danger btn-sm" onclick="deleteRole('${r.id}','${r.name}')">🗑️</button></td></tr>`).join('');
+  }catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function createRole(){
+  if(!state.selectedGuild) return toast('Selecione um servidor!','warning');
+  const name=document.getElementById('role-name').value.trim();
+  const color=document.getElementById('role-color').value;
+  if(!name) return toast('⚠️ Digite o nome!','warning');
+  try{await api('/api/roles','POST',{guildId:state.selectedGuild,action:'create',name,color});toast('✅ Cargo criado!','success');document.getElementById('role-name').value='';loadRoles();}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function deleteRole(roleId,name){
+  if(!confirm(`Deletar "${name}"?`)) return;
+  try{await api('/api/roles','POST',{guildId:state.selectedGuild,action:'delete',roleId});toast('✅ Deletado!','success');loadRoles();}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function loadChannels(){
+  if(!state.selectedGuild) return;
+  const tbody=document.getElementById('channels-tbody');
+  tbody.innerHTML='<tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr>';
+  try{
+    const channels=await api(`/api/channels?guildId=${state.selectedGuild}`);
+    const cats=channels.filter(c=>c.type===4);
+    const catMap=Object.fromEntries(cats.map(c=>[c.id,c.name]));
+    const list=channels.filter(c=>c.type!==4);
+    if(!list.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Nenhum canal</div></div></td></tr>';return;}
+    const tl={0:'💬 Texto',2:'🔊 Voz',5:'📢 News',15:'📋 Fórum',13:'🎙️ Palco'};
+    tbody.innerHTML=list.map(c=>`<tr><td>${c.name}</td><td><span class="badge badge-purple">${tl[c.type]||c.type}</span></td><td>${catMap[c.parentId]||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteChannel('${c.id}','${c.name}')">🗑️</button></td></tr>`).join('');
+  }catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function createChannel(){
+  if(!state.selectedGuild) return toast('Selecione um servidor!','warning');
+  const name=document.getElementById('ch-name').value.trim();
+  const type=document.getElementById('ch-type').value;
+  if(!name) return toast('⚠️ Digite o nome!','warning');
+  try{await api('/api/channels','POST',{guildId:state.selectedGuild,action:'create',name,type});toast('✅ Canal criado!','success');document.getElementById('ch-name').value='';loadChannels();}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function deleteChannel(channelId,name){
+  if(!confirm(`Deletar "${name}"?`)) return;
+  try{await api('/api/channels','POST',{guildId:state.selectedGuild,action:'delete',channelId});toast('✅ Deletado!','success');loadChannels();}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function loadBackup(){
+  if(!state.selectedGuild) return;
+  const el=document.getElementById('backup-info');
+  try{
+    const d=await api(`/api/backup?guildId=${state.selectedGuild}`);
+    el.innerHTML=`<div class="backup-info"><div class="backup-icon">💾</div><div class="backup-meta"><div class="backup-name">${d.guildName}</div><div class="backup-date">${new Date(d.savedAt).toLocaleString('pt-BR')}</div></div><div><div style="margin-bottom:4px"><span class="badge badge-purple">👥 ${d.roles} cargos</span></div><div><span class="badge badge-purple">📁 ${d.categories} cats</span></div></div></div><div class="alert alert-success">✅ Backup disponível.</div>`;
+  }catch(e){el.innerHTML='<div class="alert alert-warning">⚠️ Nenhum backup encontrado. Use /backup no Discord.</div>';}
+}
+
+async function restoreBackup(){
+  if(!state.selectedGuild) return;
+  if(!confirm('⚠️ Apagar TUDO e restaurar o backup?')) return;
+  try{await api('/api/backup/restore','POST',{guildId:state.selectedGuild});toast('🔄 Restauração iniciada!','success');}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function loadProtection(){
+  if(!state.selectedGuild) return;
+  if(!guildData.id) await loadOverview();
+  const toggle=document.getElementById('protection-toggle');
+  const label=document.getElementById('protection-label');
+  const active=guildData.protection||false;
+  toggle.checked=active;
+  label.textContent=active?'🛡️ Proteção Ativa':'🔓 Proteção Inativa';
+  label.style.color=active?'var(--green)':'var(--muted)';
+}
+
+async function toggleProtection(active){
+  if(!state.selectedGuild) return;
+  try{
+    await api('/api/protection','POST',{guildId:state.selectedGuild,active});
+    guildData.protection=active;
+    const label=document.getElementById('protection-label');
+    label.textContent=active?'🛡️ Proteção Ativa':'🔓 Proteção Inativa';
+    label.style.color=active?'var(--green)':'var(--muted)';
+    toast(active?'✅ Proteção ativada!':'🔓 Proteção desativada',active?'success':'warning');
+  }catch(e){toast('❌ '+e.message+' (Crie um backup primeiro!)','error');document.getElementById('protection-toggle').checked=!active;}
+}
+
+async function loadChannelsForSelect(id){
+  if(!state.selectedGuild) return;
+  try{
+    const channels=await api(`/api/channels?guildId=${state.selectedGuild}`);
+    const text=channels.filter(c=>c.type===0);
+    const sel=document.getElementById(id);
+    sel.innerHTML='<option value="">Selecione...</option>'+text.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  }catch(e){}
+}
+
+async function loadRolesForSelect(id){
+  if(!state.selectedGuild) return;
+  try{
+    const roles=await api(`/api/roles?guildId=${state.selectedGuild}`);
+    const sel=document.getElementById(id);
+    sel.innerHTML='<option value="">Selecione...</option>'+roles.map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+  }catch(e){}
+}
+
+async function saveLogChannel(){
+  const channelId=document.getElementById('log-channel-select').value;
+  if(!channelId) return toast('⚠️ Selecione um canal!','warning');
+  try{await api('/api/logs','POST',{guildId:state.selectedGuild,channelId});toast('✅ Canal de logs configurado!','success');}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+async function createReactionRole(){
+  const channelId=document.getElementById('rr-channel').value;
+  const roleId=document.getElementById('rr-role').value;
+  const emoji=document.getElementById('rr-emoji').value.trim();
+  const description=document.getElementById('rr-desc').value.trim();
+  if(!channelId||!roleId||!emoji) return toast('⚠️ Preencha todos os campos!','warning');
+  try{await api('/api/reaction-roles','POST',{guildId:state.selectedGuild,channelId,roleId,emoji,description});toast('✅ Reaction Role criado!','success');document.getElementById('rr-emoji').value='';document.getElementById('rr-desc').value='';}
+  catch(e){toast('❌ '+e.message,'error');}
+}
+
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');
+  const icons={success:'✅',error:'❌',warning:'⚠️'};
+  el.innerHTML=`${icons[type]||'💬'} ${msg}`;
+  el.className='show';
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.className='',3000);
+}
+
+initAuth();
+</script>
+</body>
+</html>
