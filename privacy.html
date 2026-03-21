@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidade — Architect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f0ff; --surface: #ffffff; --purple: #7c3aed;
+      --purple-lt: #ede9fe; --purple-md: #c4b5fd;
+      --text: #1e1033; --muted: #6b7280; --border: #e5e0f8; --accent: #5b21b6;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+    body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, #c4b5fd44 0%, transparent 70%); pointer-events: none; z-index: 0; }
+    body::after  { content: ''; position: fixed; bottom: -200px; left: -200px; width: 500px; height: 500px; background: radial-gradient(circle, #ddd6fe33 0%, transparent 70%); pointer-events: none; z-index: 0; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(244,240,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: var(--purple); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); letter-spacing: -0.5px; }
+    .logo-name span { color: var(--purple); }
+    .header-badge { font-size: 12px; font-weight: 500; color: var(--purple); background: var(--purple-lt); border: 1px solid var(--purple-md); padding: 4px 12px; border-radius: 999px; }
+    .hero { position: relative; z-index: 1; text-align: center; padding: 80px 40px 60px; max-width: 760px; margin: 0 auto; animation: fadeUp 0.6s ease both; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); background: var(--purple-lt); border: 1px solid var(--purple-md); padding: 6px 16px; border-radius: 999px; margin-bottom: 24px; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(36px,6vw,56px); line-height: 1.1; letter-spacing: -1.5px; color: var(--text); margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--purple); }
+    .hero p { color: var(--muted); font-size: 17px; font-weight: 300; max-width: 560px; margin: 0 auto 32px; }
+    .hero-meta { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 13px; color: var(--muted); }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+    .hero-meta strong { color: var(--text); }
+    .divider { max-width: 860px; margin: 0 auto; padding: 0 40px; border: none; border-top: 1px solid var(--border); }
+    .content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 60px 40px 100px; display: grid; gap: 48px; }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 48px; position: relative; overflow: hidden; transition: box-shadow 0.2s; }
+    .section:hover { box-shadow: 0 8px 40px rgba(124,58,237,0.08); }
+    .section::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--purple), var(--purple-md)); border-radius: 4px 0 0 4px; }
+    .section-num { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; display: block; }
+    .section h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.3px; color: var(--text); margin-bottom: 20px; }
+    .section p { color: #374151; font-size: 15px; line-height: 1.8; margin-bottom: 14px; }
+    .section p:last-child { margin-bottom: 0; }
+    .section ul { list-style: none; display: grid; gap: 10px; margin-top: 4px; }
+    .section ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: #374151; line-height: 1.7; }
+    .section ul li::before { content: '◆'; color: var(--purple); font-size: 8px; margin-top: 7px; flex-shrink: 0; }
+    .highlight-box { background: var(--purple-lt); border: 1px solid var(--purple-md); border-radius: 12px; padding: 16px 20px; margin-top: 16px; font-size: 14px; color: var(--accent); font-weight: 500; }
+    .table-wrap { overflow-x: auto; margin-top: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--purple-lt); color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 700; text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--purple-md); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #374151; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #faf8ff; }
+    footer { position: relative; z-index: 1; background: var(--text); color: #9ca3af; text-align: center; padding: 48px 40px; }
+    footer .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: #fff; margin-bottom: 12px; }
+    footer .footer-logo span { color: var(--purple-md); }
+    footer p { font-size: 14px; line-height: 1.8; }
+    footer a { color: var(--purple-md); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .footer-divider { border: none; border-top: 1px solid #374151; margin: 28px auto; max-width: 400px; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .section:nth-child(1) { animation: fadeUp 0.5s 0.05s ease both; }
+    .section:nth-child(2) { animation: fadeUp 0.5s 0.10s ease both; }
+    .section:nth-child(3) { animation: fadeUp 0.5s 0.15s ease both; }
+    .section:nth-child(4) { animation: fadeUp 0.5s 0.20s ease both; }
+    .section:nth-child(5) { animation: fadeUp 0.5s 0.25s ease both; }
+    .section:nth-child(6) { animation: fadeUp 0.5s 0.30s ease both; }
+    .section:nth-child(7) { animation: fadeUp 0.5s 0.35s ease both; }
+    .section:nth-child(8) { animation: fadeUp 0.5s 0.40s ease both; }
+    @media (max-width: 640px) { header { padding: 14px 20px; } .hero { padding: 60px 20px 40px; } .content { padding: 40px 20px 80px; } .section { padding: 28px 24px; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-icon">🏗️</div>
+      <span class="logo-name">Architect<span>.alz</span></span>
+    </a>
+    <span class="header-badge">Política de Privacidade</span>
+  </header>
+
+  <section class="hero">
+    <span class="hero-tag">Documentação Legal</span>
+    <h1>Política de <em>Privacidade</em></h1>
+    <p>Sua privacidade é nossa prioridade. Este documento descreve quais dados coletamos, como utilizamos e como protegemos suas informações.</p>
+    <div class="hero-meta">
+      <span>📅 <strong>Última atualização:</strong> Março de 2026</span>
+      <span>📦 <strong>Versão:</strong> v1.5.0</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <main class="content">
+
+    <div class="section">
+      <span class="section-num">01 — Introdução</span>
+      <h2>Quem Somos</h2>
+      <p>O Architect é um bot para Discord desenvolvido e mantido por <strong>Alzhayds</strong>. Esta Política de Privacidade explica como tratamos os dados necessários para o funcionamento do bot.</p>
+      <p>Ao utilizar o Architect, você concorda com as práticas descritas neste documento.</p>
+      <div class="highlight-box">◆ Não vendemos, alugamos ou compartilhamos seus dados com terceiros para fins comerciais.</div>
+    </div>
+
+    <div class="section">
+      <span class="section-num">02 — Dados Coletados</span>
+      <h2>O Que Coletamos</h2>
+      <p>O Architect coleta apenas os dados estritamente necessários para suas funcionalidades:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Dado</th><th>Finalidade</th><th>Obrigatório</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>ID do Servidor</strong></td><td>Identificar o servidor para salvar e recuperar backups</td><td>✅ Sim</td></tr>
+            <tr><td><strong>Nomes de canais e cargos</strong></td><td>Salvar a estrutura do servidor no sistema de backup</td><td>✅ Sim</td></tr>
+            <tr><td><strong>Permissões de cargos e canais</strong></td><td>Restaurar as configurações exatas após um nuke</td><td>✅ Sim</td></tr>
+            <tr><td><strong>Últimas 50 mensagens por canal</strong></td><td>Restaurar histórico recente quando /backup é executado</td><td>⚙️ Opcional</td></tr>
+            <tr><td><strong>ID de usuários no audit log</strong></td><td>Detectar atividade suspeita no sistema anti-nuke</td><td>⚙️ Somente com proteção ativa</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <span class="section-num">03 — Não Coletamos</span>
+      <h2>O Que Não Coletamos</h2>
+      <p>Para sua total tranquilidade, confirmamos que o Architect <strong>nunca</strong> coleta:</p>
+      <ul>
+        <li>Senhas, tokens ou credenciais de qualquer tipo</li>
+        <li>Informações pessoais dos membros como nome real, e-mail ou telefone</li>
+        <li>Dados de pagamento ou informações financeiras</li>
+        <li>Conteúdo de mensagens diretas (DMs) entre usuários</li>
+        <li>Histórico completo além das últimas 50 mensagens por canal</li>
+        <li>Localização, endereço IP ou dados de dispositivo</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <span class="section-num">04 — Uso dos Dados</span>
+      <h2>Como Utilizamos os Dados</h2>
+      <p>Os dados coletados são utilizados exclusivamente para:</p>
+      <ul>
+        <li>Salvar e restaurar a estrutura completa do seu servidor Discord</li>
+        <li>Detectar e alertar sobre atividades suspeitas de nuke quando a proteção está ativa</li>
+        <li>Melhorar a qualidade e precisão das funcionalidades do bot</li>
+      </ul>
+      <div class="highlight-box">◆ Os dados são armazenados localmente nos servidores do Architect e nunca são compartilhados com serviços de terceiros para fins analíticos ou publicitários.</div>
+    </div>
+
+    <div class="section">
+      <span class="section-num">05 — Retenção</span>
+      <h2>Por Quanto Tempo Guardamos</h2>
+      <p>Os dados são armazenados enquanto o Architect estiver ativo no seu servidor:</p>
+      <ul>
+        <li><strong>Backups</strong> — mantidos até que você execute um novo /backup ou remova o bot</li>
+        <li><strong>Dados do anti-nuke</strong> — armazenados apenas em memória durante a sessão ativa, não persistem após reinicialização</li>
+      </ul>
+      <p>Ao remover o Architect do seu servidor, os dados associados podem ser excluídos mediante solicitação.</p>
+    </div>
+
+    <div class="section">
+      <span class="section-num">06 — Seus Direitos</span>
+      <h2>Seus Direitos</h2>
+      <p>Você tem o direito de:</p>
+      <ul>
+        <li><strong>Acesso</strong> — solicitar quais dados temos do seu servidor</li>
+        <li><strong>Exclusão</strong> — solicitar a remoção completa dos dados do seu servidor</li>
+        <li><strong>Portabilidade</strong> — solicitar seus dados em formato legível</li>
+        <li><strong>Oposição</strong> — remover o bot do servidor a qualquer momento, encerrando a coleta</li>
+      </ul>
+      <p>Para exercer qualquer um desses direitos, entre em contato pelo servidor oficial de suporte do Architect.</p>
+    </div>
+
+    <div class="section">
+      <span class="section-num">07 — Segurança</span>
+      <h2>Segurança dos Dados</h2>
+      <p>Adotamos medidas razoáveis para proteger os dados armazenados pelo Architect:</p>
+      <ul>
+        <li>Armazenamento local sem exposição pública dos dados</li>
+        <li>Sem integração com serviços de analytics ou rastreamento</li>
+        <li>Acesso restrito apenas às funcionalidades essenciais do bot</li>
+      </ul>
+      <p>Em caso de incidente de segurança relevante, notificaremos os usuários afetados pelo servidor de suporte.</p>
+    </div>
+
+    <div class="section">
+      <span class="section-num">08 — Contato</span>
+      <h2>Dúvidas e Solicitações</h2>
+      <p>Para qualquer dúvida sobre esta Política de Privacidade ou para exercer seus direitos:</p>
+      <ul>
+        <li>Servidor oficial de suporte do Architect no Discord</li>
+        <li>Desenvolvedor: <strong>Alzhayds</strong></li>
+      </ul>
+      <div class="highlight-box">◆ Desenvolvido com responsabilidade por <strong>Alzhayds</strong> — Create. Protect. Restore.</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-logo">Architect<span>.alz</span></div>
+    <p>Desenvolvido por <a href="#">Alzhayds</a> · Versão v1.5.0</p>
+    <hr class="footer-divider" />
+    <p>© 2026 Architect. Todos os direitos reservados.<br />
+    Este documento está em conformidade com os <a href="https://discord.com/terms" target="_blank">Termos de Serviço do Discord</a>.</p>
+  </footer>
+
+</body>
+</html>
