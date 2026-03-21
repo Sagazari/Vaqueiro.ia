@@ -1,2 +1,0 @@
-# Vaqueiro.ia
-MyBot
