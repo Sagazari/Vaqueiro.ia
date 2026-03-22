@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Architect</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Architect — FAQ" />
+  <meta property="og:description" content="Dúvidas frequentes sobre o Architect, o bot mais completo de criação e proteção de servidores do Discord." />
+  <meta property="og:image" content="https://termsarch-ez.onrender.com/banner.png" />
+  <meta property="og:url" content="https://termsarch-ez.onrender.com/faq.html" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f0ff; --surface: #ffffff; --purple: #7c3aed;
+      --purple-lt: #ede9fe; --purple-md: #c4b5fd;
+      --text: #1e1033; --muted: #6b7280; --border: #e5e0f8; --accent: #5b21b6;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, #c4b5fd44 0%, transparent 70%); pointer-events: none; z-index: 0; }
+
+    header { position: sticky; top: 0; z-index: 100; background: rgba(244,240,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: var(--purple); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); letter-spacing: -0.5px; }
+    .logo-name span { color: var(--purple); }
+    .header-badge { font-size: 12px; font-weight: 500; color: var(--purple); background: var(--purple-lt); border: 1px solid var(--purple-md); padding: 4px 12px; border-radius: 999px; }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: all 0.15s; }
+    .nav-link:hover { background: var(--purple-lt); color: var(--purple); }
+
+    .hero { position: relative; z-index: 1; text-align: center; padding: 80px 40px 60px; max-width: 760px; margin: 0 auto; animation: fadeUp 0.6s ease both; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); background: var(--purple-lt); border: 1px solid var(--purple-md); padding: 6px 16px; border-radius: 999px; margin-bottom: 24px; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(36px,6vw,56px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--purple); }
+    .hero p { color: var(--muted); font-size: 17px; font-weight: 300; max-width: 560px; margin: 0 auto; }
+
+    .divider { max-width: 860px; margin: 0 auto; padding: 0 40px; border: none; border-top: 1px solid var(--border); }
+
+    .content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 60px 40px 100px; display: grid; gap: 12px; }
+
+    .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: box-shadow 0.2s; }
+    .faq-item:hover { box-shadow: 0 4px 24px rgba(124,58,237,0.08); }
+    .faq-question { padding: 20px 24px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; user-select: none; }
+    .faq-question h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; flex: 1; }
+    .faq-icon { width: 28px; height: 28px; background: var(--purple-lt); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--purple); font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer p { padding: 0 24px 20px; color: #374151; font-size: 15px; line-height: 1.8; border-top: 1px solid var(--border); padding-top: 16px; }
+
+    .faq-category { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin: 32px 0 12px; padding-left: 4px; }
+    .faq-category:first-child { margin-top: 0; }
+
+    .cta { position: relative; z-index: 1; text-align: center; padding: 60px 40px; background: var(--surface); border-top: 1px solid var(--border); }
+    .cta h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; margin-bottom: 12px; }
+    .cta p { color: var(--muted); margin-bottom: 24px; }
+    .btn-invite { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: #fff; padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+    .btn-invite:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.3); }
+
+    footer { background: #1e1033; color: #9ca3af; text-align: center; padding: 40px; font-size: 14px; }
+    footer .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: #fff; margin-bottom: 8px; }
+    footer .footer-logo span { color: var(--purple-md); }
+    footer a { color: var(--purple-md); text-decoration: none; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media(max-width:640px) { header { padding: 14px 20px; } .hero { padding: 60px 20px 40px; } .content { padding: 40px 20px 80px; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-icon">🏗️</div>
+      <span class="logo-name">Architect<span>.alz</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="terms.html">Termos</a>
+      <a class="nav-link" href="privacy.html">Privacidade</a>
+      <a class="nav-link" href="invite.html">Adicionar</a>
+    </div>
+    <span class="header-badge">FAQ</span>
+  </header>
+
+  <section class="hero">
+    <span class="hero-tag">Perguntas Frequentes</span>
+    <h1>Tire suas <em>Dúvidas</em></h1>
+    <p>Encontre respostas para as perguntas mais comuns sobre o Architect.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <main class="content">
+
+    <div class="faq-category">🤖 Sobre o Bot</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O que é o Architect?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>O Architect é um bot para Discord que usa Inteligência Artificial para criar servidores completos do zero. Além da criação, oferece sistema de backup, restauração após nukes, proteção anti-nuke em tempo real, reaction roles e muito mais.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O Architect é gratuito?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Sim! Todos os comandos do Architect são completamente gratuitos. Não há planos pagos, sem cobranças ocultas e sem limites de uso.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Quem desenvolveu o Architect?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>O Architect foi desenvolvido pela Alzhayds, uma empresa brasileira focada em desenvolvimento de bots e ferramentas para Discord. A versão atual é a v1.5.0.</p></div>
+    </div>
+
+    <div class="faq-category">🏗️ Criação de Servidores</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Como o /criar_servidor funciona?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Você usa o comando /criar_servidor e descreve em texto o servidor que quer. A IA analisa o prompt e cria automaticamente todos os cargos com cores e permissões, categorias, canais de texto, voz, fórum, announcement e palco — tudo organizado e profissional.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O /criar_servidor apaga meu servidor atual?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Sim! Antes de criar a nova estrutura, o bot apaga todos os canais e cargos existentes. Por isso aparece uma tela de confirmação antes de executar. Recomendamos usar /backup antes de usar o /criar_servidor.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O que são os Templates?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Os templates são estruturas prontas para tipos específicos de servidor. Use /template e escolha entre: Comunidade, Gaming, Militar, Loja, Anime ou Educacional. É a forma mais rápida de criar um servidor profissional sem precisar descrever tudo.</p></div>
+    </div>
+
+    <div class="faq-category">💾 Backup e Restauração</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O que o /backup salva?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>O /backup salva toda a estrutura do servidor: cargos com cores e permissões, categorias, canais (texto, voz, fórum, palco), permissões por canal, tópicos e as últimas 50 mensagens de cada canal de texto.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Meu servidor foi nukado, como restauro?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Se você tinha um backup salvo, use o comando /restaurar. O bot irá recriar toda a estrutura exatamente como estava, incluindo cargos, canais e mensagens salvas. Por isso é importante fazer backup regularmente!</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Posso ter múltiplos backups?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Atualmente o Architect mantém 1 backup por servidor. Cada vez que você usa /backup, o backup anterior é substituído pelo novo. Planejamos adicionar múltiplos backups em versões futuras.</p></div>
+    </div>
+
+    <div class="faq-category">🛡️ Proteção Anti-Nuke</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Como funciona a proteção anti-nuke?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>O sistema monitora em tempo real as deleções de canais e cargos. Se detectar 3 ou mais deleções em menos de 10 segundos pelo mesmo usuário, envia um alerta imediato no servidor. Para ativar use /proteger ativo:true.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>O bot bane o nukador automaticamente?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Não. O bot detecta e alerta sobre a atividade suspeita, mas o ban deve ser feito manualmente pelo dono do servidor. Isso evita bans falsos positivos.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Preciso de backup para ativar a proteção?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Sim! É necessário ter um backup salvo antes de ativar a proteção anti-nuke. Use /backup primeiro e depois /proteger ativo:true.</p></div>
+    </div>
+
+    <div class="faq-category">⚙️ Permissões e Configuração</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Quais permissões o bot precisa?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>O Architect precisa de permissão de Administrador para funcionar corretamente. Isso é necessário para criar e deletar canais, criar e deletar cargos, e monitorar o audit log para o sistema anti-nuke.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggle(this)">
+        <h3>Qualquer membro pode usar os comandos?</h3>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer"><p>Não. Os comandos principais (/criar_servidor, /backup, /restaurar, /proteger, /deletar, /cargo_criar, /canal_criar) requerem permissão de Administrador. Apenas /info, /help e /status são públicos para todos os membros.</p></div>
+    </div>
+
+  </main>
+
+  <div class="cta">
+    <h2>Pronto para começar?</h2>
+    <p>Adicione o Architect ao seu servidor e crie algo incrível.</p>
+    <a class="btn-invite" href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&integration_type=0&scope=bot+applications.commands">
+      🏗️ Adicionar ao Discord
+    </a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Architect<span>.alz</span></div>
+    <p>Desenvolvido por <a href="#">Alzhayds</a> · v1.5.0 · <a href="terms.html">Termos</a> · <a href="privacy.html">Privacidade</a></p>
+  </footer>
+
+  <script>
+    function toggle(el) {
+      const item = el.parentElement;
+      item.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
