@@ -256,7 +256,7 @@
 const API_URL   = 'https://termsarch-ez.onrender.com/auth/callback';
 const API_KEY   = 'vmje0_gLlcEhMnO9Njz9zSLOYzcXqBPp';
 const CLIENT_ID = '1353210073832357992';
-const OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(API_URL+'/auth/callback')}&response_type=code&scope=identify+guilds`;
+const OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(API_URL)}&response_type=code&scope=identify+guilds`;
 
 let state = { user:null, guilds:[], selectedGuild:null };
 let guildData = {};
