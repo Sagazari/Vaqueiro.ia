@@ -497,10 +497,46 @@ function toast(msg,type='success'){
   el._t=setTimeout(()=>el.className='',3000);
 }
 
-initAuth();
 function login() {
     window.location.href = "https://oauth-architect.onrender.com/login";
 }
+function initAuth() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    // Se voltou do Discord
+    if (code) {
+        localStorage.setItem("logado", "true");
+
+        // limpa a URL
+        window.history.replaceState({}, document.title, "/dashboard.html");
+    }
+
+    // Verifica login
+    const logado = localStorage.getItem("logado");
+
+    if (logado === "true") {
+        document.getElementById("login-page").style.display = "none";
+        document.getElementById("app").style.display = "flex";
+    } else {
+        document.getElementById("login-page").style.display = "flex";
+        document.getElementById("app").style.display = "none";
+    }
+}
+
+// botão de login
+function loginDiscord() {
+    window.location.href = "https://oauth-architect.onrender.com/login";
+}
+
+// logout
+function logout() {
+    localStorage.removeItem("logado");
+    location.reload();
+}
+
+// INICIA TUDO
+initAuth();
 </script>
 </body>
 </html>
