@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Architect — Create. Protect. Restore.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080810;
+      --bg2: #0d0d1a;
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --purple-glow: #9333ea;
+      --violet: #6d28d9;
+      --accent: #c084fc;
+      --text: #f1f0ff;
+      --text-muted: #8b80b0;
+      --border: rgba(124,58,237,0.2);
+      --card: rgba(124,58,237,0.07);
+      --nav-height: 70px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      background: rgba(8,8,16,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo span {
+      background: linear-gradient(135deg, var(--purple-light), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-logo .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      box-shadow: 0 0 20px rgba(124,58,237,0.3);
+      transition: all 0.2s !important;
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(124,58,237,0.5) !important; color: white !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-height) + 4rem) 6% 6rem;
+      position: relative;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--purple-light) 0%, var(--accent) 50%, #f0abfc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 560px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      padding: 0.85rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 0 30px rgba(124,58,237,0.4);
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,58,237,0.6); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover { border-color: var(--purple-light); color: var(--accent); }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 5rem;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--purple-light), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 6%; position: relative; z-index: 1; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 500px;
+    }
+    .section-header { margin-bottom: 4rem; }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,0.08), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover { border-color: rgba(124,58,237,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(124,58,237,0.15); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--purple), var(--violet));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 0 20px rgba(124,58,237,0.3);
+    }
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      position: relative;
+    }
+    .step {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .step-number {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin: 0 auto 1.2rem;
+      box-shadow: 0 0 30px rgba(124,58,237,0.4);
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.5rem; }
+    .step p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ── COMMANDS PREVIEW ── */
+    .commands-preview {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      overflow: hidden;
+    }
+    .cmd-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .cmd-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.15);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+    .cmd-item:hover { background: rgba(124,58,237,0.15); border-color: rgba(168,85,247,0.3); }
+    .cmd-name { font-family: 'DM Sans', monospace; color: var(--accent); font-weight: 500; }
+    .cmd-desc { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 6%;
+      position: relative;
+    }
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,58,237,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+    .cta-section p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 3rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 6%;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats { gap: 2rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">🏗️</div>
+    <span>Architect</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="comandos.html">Comandos</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="status.html">Status</a></li>
+    <li><a href="suporte.html">Suporte</a></li>
+    <li><a href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&scope=bot+applications.commands" class="nav-cta">+ Adicionar</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Architect v1.6.0 — Agora disponível</div>
+  <h1>
+    O bot que<br/>
+    <span class="gradient-text">cria, protege</span><br/>
+    e restaura.
+  </h1>
+  <p>Crie servidores completos com IA, proteja sua comunidade com anti-nuke em tempo real e restaure tudo com um clique.</p>
+  <div class="hero-buttons">
+    <a href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&scope=bot+applications.commands" class="btn-primary">+ Adicionar ao Discord</a>
+    <a href="comandos.html" class="btn-secondary">Ver comandos →</a>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">99+</div>
+      <div class="stat-label">Servidores ativos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">24</div>
+      <div class="stat-label">Comandos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Idiomas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">v1.6</div>
+      <div class="stat-label">Versão atual</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section>
+  <div class="section-header">
+    <div class="section-label">Recursos</div>
+    <h2 class="section-title">Tudo que seu servidor precisa</h2>
+    <p class="section-sub">Do zero ao completo em segundos, com inteligência artificial e proteção em tempo real.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h3>Criação com IA</h3>
+      <p>Descreva o servidor que você quer e a IA cria toda a estrutura — cargos, categorias e canais — automaticamente.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>Anti-Nuke</h3>
+      <p>Monitoramento em tempo real. Se alguém deletar muitos canais ou cargos em sequência, o bot alerta imediatamente.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <h3>Backup Completo</h3>
+      <p>Salva toda a estrutura do servidor: cargos, canais, categorias, permissões e configurações detalhadas.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Restauração Total</h3>
+      <p>Restaure seu servidor do backup com um clique. Ideal para recuperação após ataques ou reorganização completa.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Multi-idioma</h3>
+      <p>Suporte a 5 idiomas: Português, Inglês, Espanhol, Francês e Alemão. Cada servidor com seu idioma preferido.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Moderação Avançada</h3>
+      <p>Ban, kick, mute, warn, lock, slowmode e mais. Tudo com embeds profissionais e notificações por DM.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-header">
+    <div class="section-label">Como funciona</div>
+    <h2 class="section-title">Simples assim</h2>
+    <p class="section-sub">Do zero ao servidor completo em menos de 2 minutos.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <h3>Adicione o bot</h3>
+      <p>Adicione o Architect ao seu servidor Discord com permissões de Administrador.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <h3>Use /criar_servidor</h3>
+      <p>Descreva o tipo de servidor que você quer. A IA analisa e gera a estrutura completa.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3>Confirme</h3>
+      <p>Revise o que será criado — cargos, categorias e canais — e confirme em 60 segundos.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">4</div>
+      <h3>Pronto!</h3>
+      <p>Seu servidor está criado com estrutura profissional. Ative o anti-nuke e faça o backup.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMMANDS PREVIEW -->
+<section>
+  <div class="section-header">
+    <div class="section-label">Comandos</div>
+    <h2 class="section-title">24 comandos poderosos</h2>
+    <p class="section-sub">Desde criação com IA até moderação avançada. <a href="comandos.html" style="color:var(--accent)">Ver todos →</a></p>
+  </div>
+  <div class="commands-preview">
+    <div class="cmd-list">
+      <div class="cmd-item"><span class="cmd-name">/criar_servidor</span><span class="cmd-desc">Cria com IA</span></div>
+      <div class="cmd-item"><span class="cmd-name">/template</span><span class="cmd-desc">Templates prontos</span></div>
+      <div class="cmd-item"><span class="cmd-name">/backup</span><span class="cmd-desc">Salva estrutura</span></div>
+      <div class="cmd-item"><span class="cmd-name">/restaurar</span><span class="cmd-desc">Restaura backup</span></div>
+      <div class="cmd-item"><span class="cmd-name">/proteger</span><span class="cmd-desc">Anti-nuke toggle</span></div>
+      <div class="cmd-item"><span class="cmd-name">/deletar</span><span class="cmd-desc">Deleta canais/cargos</span></div>
+      <div class="cmd-item"><span class="cmd-name">/ban</span><span class="cmd-desc">Bane membro</span></div>
+      <div class="cmd-item"><span class="cmd-name">/kick</span><span class="cmd-desc">Expulsa membro</span></div>
+      <div class="cmd-item"><span class="cmd-name">/mute</span><span class="cmd-desc">Muta membro</span></div>
+      <div class="cmd-item"><span class="cmd-name">/warn</span><span class="cmd-desc">Adverte membro</span></div>
+      <div class="cmd-item"><span class="cmd-name">/idioma</span><span class="cmd-desc">Muda idioma</span></div>
+      <div class="cmd-item"><span class="cmd-name">/status</span><span class="cmd-desc">Info do servidor</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <h2>Pronto para começar?</h2>
+  <p>Adicione o Architect ao seu servidor e veja a diferença agora mesmo.</p>
+  <div class="hero-buttons">
+    <a href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&scope=bot+applications.commands" class="btn-primary">+ Adicionar ao Discord — Grátis</a>
+    <a href="suporte.html" class="btn-secondary">Servidor de Suporte</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">🏗️ Architect</a>
+  <ul class="footer-links">
+    <li><a href="comandos.html">Comandos</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="status.html">Status</a></li>
+    <li><a href="termos.html">Termos</a></li>
+    <li><a href="privacidade.html">Privacidade</a></li>
+    <li><a href="suporte.html">Suporte</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Alzhadys. Create. Protect. Restore.</span>
+</footer>
+
+</body>
+</html>
