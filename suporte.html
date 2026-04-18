@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suporte — Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://architectalz.netlify.app/suporte"/>
+  <meta property="og:title" content="Suporte — Architect"/>
+  <meta property="og:description" content="Precisa de ajuda? Entre em nosso servidor de suporte ou consulte o FAQ."/>
+  <meta property="og:image" content="https://architectalz.netlify.app/suporte.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:site_name" content="Architect"/>
+  <meta name="theme-color" content="#D97757"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Suporte — Architect"/>
+  <meta name="twitter:description" content="Precisa de ajuda? Entre em nosso servidor de suporte ou consulte o FAQ."/>
+  <meta name="twitter:image" content="https://architectalz.netlify.app/suporte.png"/>
+  <style>
+    :root {
+      --bg:#111110;--bg2:#1C1C1A;--bg3:#242422;
+      --orange:#D97757;--orange-dk:#B85E3A;--orange-lt:#E8956D;
+      --text:#EFEDE6;--text-2:#C8C5BC;--text-muted:#8A8880;
+      --border:rgba(217,119,87,0.14);--border-2:rgba(239,237,230,0.08);
+      --card:rgba(255,255,255,0.03);--nav-h:68px;--r:14px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.35;}
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(17,17,16,0.82);backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid var(--border-2);z-index:900;}
+    .nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;letter-spacing:-0.02em;}
+    .nav-logo .mark{width:34px;height:34px;background:linear-gradient(145deg,var(--orange-dk),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 0 18px rgba(217,119,87,0.4),inset 0 1px 0 rgba(255,255,255,0.12);}
+    .nav-links{display:flex;gap:1.75rem;list-style:none;}
+    .nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--text);}
+    .nav-cta{background:var(--orange)!important;color:#fff!important;padding:0.45rem 1.1rem;border-radius:8px;font-weight:600!important;font-size:0.875rem!important;box-shadow:0 0 16px rgba(217,119,87,0.3);transition:all 0.2s!important;}
+    .nav-cta:hover{background:var(--orange-lt)!important;color:#fff!important;}
+    main{padding:calc(var(--nav-h) + 4rem) 5% 6rem;max-width:860px;margin:0 auto;}
+    .page-label{font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;}
+    .page-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1rem;}
+    .page-sub{color:var(--text-muted);font-size:1rem;margin-bottom:3rem;}
+    .page-sub a{color:var(--orange);}
+    footer{border-top:1px solid var(--border-2);padding:2.75rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.25rem;}
+    .footer-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none;letter-spacing:-0.02em;}
+    .footer-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap;}
+    .footer-links a{color:var(--text-muted);text-decoration:none;font-size:0.84rem;transition:color 0.2s;}
+    .footer-links a:hover{color:var(--text);}
+    .footer-copy{color:var(--text-muted);font-size:0.78rem;}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+    #cookie-banner{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);width:calc(100% - 3rem);max-width:560px;background:var(--bg2);border:1px solid var(--border-2);border-radius:14px;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;box-shadow:0 8px 40px rgba(0,0,0,0.5);z-index:10000;animation:slideUp 0.4s ease both;}
+    #cookie-banner.hidden{display:none;}
+    @keyframes slideUp{from{opacity:0;transform:translate(-50%,20px);}to{opacity:1;transform:translate(-50%,0);}}
+    .cookie-text{font-size:0.875rem;color:var(--text-2);flex:1;min-width:200px;}
+    .cookie-text a{color:var(--orange);}
+    .cookie-btns{display:flex;gap:0.6rem;flex-shrink:0;}
+    .cookie-accept{background:var(--orange);color:#fff;border:none;padding:0.5rem 1.1rem;border-radius:7px;font-size:0.845rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+    .cookie-accept:hover{background:var(--orange-lt);}
+    .cookie-decline{background:transparent;color:var(--text-muted);border:1px solid var(--border-2);padding:0.5rem 1.1rem;border-radius:7px;font-size:0.845rem;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+    .cookie-decline:hover{color:var(--text);border-color:rgba(255,255,255,0.15);}
+    @media(max-width:768px){.nav-links{display:none;}footer{flex-direction:column;text-align:center;}#cookie-banner{flex-direction:column;}}
+
+    .support-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-bottom:4rem;}
+    .support-card{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:2rem;text-align:center;transition:all 0.3s;text-decoration:none;display:block;}
+    .support-card:hover{border-color:rgba(217,119,87,0.35);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,0.25);}
+    .support-card-icon{font-size:2.2rem;margin-bottom:1rem;}
+    .support-card h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);margin-bottom:0.4rem;}
+    .support-card p{color:var(--text-muted);font-size:0.855rem;line-height:1.6;}
+    .support-link{display:inline-flex;align-items:center;gap:0.4rem;color:var(--orange);font-size:0.855rem;font-weight:500;margin-top:0.875rem;}
+    .res-list{display:flex;flex-direction:column;gap:0.75rem;}
+    .res-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:1.25rem;}
+    .res-item{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:var(--card);border:1px solid var(--border-2);border-radius:11px;text-decoration:none;transition:all 0.2s;}
+    .res-item:hover{border-color:rgba(217,119,87,0.3);background:rgba(217,119,87,0.04);}
+    .res-left{display:flex;align-items:center;gap:0.75rem;}
+    .res-icon{font-size:1.15rem;}
+    .res-name{color:var(--text);font-weight:500;font-size:0.93rem;}
+    .res-desc{color:var(--text-muted);font-size:0.78rem;}
+    .res-arrow{color:var(--orange);font-size:1rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><div class="mark">🏗️</div>Architect</a>
+  <ul class="nav-links">
+    <li><a href="comandos.html">Comandos</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="status.html">Status</a></li>
+    <li><a href="suporte.html">Suporte</a></li>
+    <li><a href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&scope=bot+applications.commands" class="nav-cta">+ Adicionar</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="reveal" style="animation:fadeUp 0.5s ease both;">
+    <div class="page-label">Ajuda</div>
+    <h1 class="page-title">Suporte</h1>
+    <p class="page-sub">Precisa de ajuda? Estamos aqui. Escolha o melhor canal de atendimento.</p>
+  </div>
+  <div class="support-grid">
+    <a href="https://discord.gg/SEU_INVITE_AQUI" target="_blank" class="support-card reveal">
+      <div class="support-card-icon">💬</div>
+      <h3>Servidor de Suporte</h3>
+      <p>Entre no nosso servidor oficial para tirar dúvidas, reportar bugs e acompanhar novidades.</p>
+      <div class="support-link">Entrar no Discord →</div>
+    </a>
+    <a href="faq.html" class="support-card reveal">
+      <div class="support-card-icon">❓</div>
+      <h3>Perguntas Frequentes</h3>
+      <p>Consulte nossa base de conhecimento com as perguntas mais comuns sobre o Architect.</p>
+      <div class="support-link">Ver FAQ →</div>
+    </a>
+    <a href="status.html" class="support-card reveal">
+      <div class="support-card-icon">📡</div>
+      <h3>Status do Sistema</h3>
+      <p>Verifique a disponibilidade em tempo real do bot e de todos os serviços relacionados.</p>
+      <div class="support-link">Ver Status →</div>
+    </a>
+  </div>
+  <div class="res-title reveal">Recursos úteis</div>
+  <div class="res-list">
+    <a href="comandos.html" class="res-item reveal"><div class="res-left"><span class="res-icon">📋</span><div><div class="res-name">Lista de Comandos</div><div class="res-desc">Todos os 26 comandos com descrição</div></div></div><span class="res-arrow">→</span></a>
+    <a href="changelog.html" class="res-item reveal"><div class="res-left"><span class="res-icon">📦</span><div><div class="res-name">Changelog</div><div class="res-desc">Histórico completo de atualizações</div></div></div><span class="res-arrow">→</span></a>
+    <a href="termos.html" class="res-item reveal"><div class="res-left"><span class="res-icon">📄</span><div><div class="res-name">Termos de Uso</div><div class="res-desc">Regras e condições de uso</div></div></div><span class="res-arrow">→</span></a>
+    <a href="privacidade.html" class="res-item reveal"><div class="res-left"><span class="res-icon">🔒</span><div><div class="res-name">Política de Privacidade</div><div class="res-desc">Como coletamos e protegemos seus dados</div></div></div><span class="res-arrow">→</span></a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1353210073832357992&permissions=8&scope=bot+applications.commands" target="_blank" class="res-item reveal"><div class="res-left"><span class="res-icon">🤖</span><div><div class="res-name">Adicionar ao Discord</div><div class="res-desc">Adicione o Architect ao seu servidor agora</div></div></div><span class="res-arrow">→</span></a>
+  </div>
+</main>
+<footer>
+  <a href="index.html" class="footer-logo">🏗️ Architect</a>
+  <ul class="footer-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="comandos.html">Comandos</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="termos.html">Termos</a></li>
+    <li><a href="privacidade.html">Privacidade</a></li>
+    <li><a href="suporte.html">Suporte</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Alzhadys. Create. Protect. Restore.</span>
+</footer>
+<div id="cookie-banner">
+  <p class="cookie-text">Usamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-decline" onclick="setCookie('declined')">Recusar</button>
+    <button class="cookie-accept" onclick="setCookie('accepted')">Aceitar</button>
+  </div>
+</div>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*60); obs.unobserve(e.target); } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  function setCookie(v){localStorage.setItem('architect_cookie',v);document.getElementById('cookie-banner').classList.add('hidden');}
+  if(localStorage.getItem('architect_cookie')) document.getElementById('cookie-banner').classList.add('hidden');
+</script>
+</body>
+</html>
