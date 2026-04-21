@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Architect — The server building system</title>
+  <meta name="description" content="Built for Discord communities that demand structure. Create, protect, and restore servers with precision."/>
+  <meta property="og:title" content="Architect — The server building system"/>
+  <meta property="og:description" content="Built for Discord communities that demand structure."/>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #060605;
+      --bg-1:      #0e0e0c;
+      --bg-2:      #161614;
+      --bg-3:      #1e1e1b;
+      --line:      #252522;
+      --line-2:    #303030;
+      --text:      #e8e8e0;
+      --text-2:    #9a9990;
+      --text-3:    #555550;
+      --orange:    #f26c1e;
+      --orange-d:  #c95510;
+      --orange-dim: rgba(242,108,30,.12);
+      --f: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: ui-monospace, 'SF Mono', Consolas, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ────────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 54px;
+      display: flex; align-items: center;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(6,6,5,.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; margin-right: auto;
+    }
+    .nav-logo img { width: 20px; height: 20px; }
+    .nav-logo-name {
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text); letter-spacing: -.01em;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0;
+      list-style: none; margin-right: 20px;
+    }
+    .nav-links a {
+      font-size: 13px; color: var(--text-2);
+      text-decoration: none; padding: 0 12px; height: 54px;
+      display: flex; align-items: center;
+      transition: color .12s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-end { display: flex; align-items: center; gap: 8px; }
+    .nav-btn {
+      font-family: var(--f); font-size: 12.5px; font-weight: 400;
+      padding: 6px 14px; border-radius: 6px;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all .12s;
+    }
+    .nav-btn-ghost {
+      background: transparent;
+      border: 1px solid var(--line-2);
+      color: var(--text-2);
+    }
+    .nav-btn-ghost:hover { border-color: var(--text-3); color: var(--text); }
+    .nav-btn-orange {
+      background: var(--orange);
+      color: #fff; font-weight: 500;
+    }
+    .nav-btn-orange:hover { background: var(--orange-d); }
+
+    /* ── HERO ───────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 28px 80px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle grid pattern */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: .35;
+      pointer-events: none;
+    }
+    /* Orange glow bottom-left */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; left: -80px;
+      width: 560px; height: 560px;
+      background: radial-gradient(ellipse, rgba(242,108,30,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto; width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--orange);
+      letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 20px; height: 1px;
+      background: var(--orange);
+    }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 600;
+      line-height: 1.0;
+      letter-spacing: -.04em;
+      color: #fff;
+      max-width: 900px;
+      margin-bottom: 28px;
+    }
+    .hero h1 .dim { color: var(--text-2); font-weight: 300; }
+    .hero-sub {
+      font-size: 15px; font-weight: 300;
+      color: var(--text-2); max-width: 420px;
+      line-height: 1.65; margin-bottom: 36px;
+    }
+    .hero-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-hero {
+      font-family: var(--f); font-size: 13px; font-weight: 500;
+      padding: 9px 20px; border-radius: 6px;
+      text-decoration: none; cursor: pointer; border: none;
+      display: inline-flex; align-items: center; gap: 7px;
+      transition: all .12s;
+    }
+    .btn-hero-primary {
+      background: var(--orange); color: #fff;
+    }
+    .btn-hero-primary:hover { background: var(--orange-d); }
+    .btn-hero-primary svg { width: 13px; height: 13px; }
+    .btn-hero-ghost {
+      background: transparent;
+      border: 1px solid var(--line-2);
+      color: var(--text-2);
+    }
+    .btn-hero-ghost:hover { border-color: var(--text-3); color: var(--text); }
+
+    .hero-stats {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      display: flex; gap: 48px;
+    }
+    .hstat {}
+    .hstat-val {
+      font-size: 22px; font-weight: 600;
+      color: #fff; letter-spacing: -.03em;
+      line-height: 1; margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hstat-val.orange { color: var(--orange); }
+    .hstat-label {
+      font-family: var(--mono);
+      font-size: 10.5px; color: var(--text-3);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* ── MOCK TERMINAL — hero visual ────────────────────────────── */
+    .hero-visual {
+      position: absolute;
+      right: 28px; top: 54px;
+      width: 420px;
+      border: 1px solid var(--line-2);
+      border-radius: 8px;
+      background: var(--bg-1);
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .hv-bar {
+      height: 36px; background: var(--bg-2);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center;
+      padding: 0 14px; gap: 6px;
+    }
+    .hv-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .hv-dot-r { background: #ff5f57; }
+    .hv-dot-y { background: #febc2e; }
+    .hv-dot-g { background: #28c840; }
+    .hv-title {
+      font-size: 11px; color: var(--text-3);
+      margin-left: auto; margin-right: auto;
+      letter-spacing: .04em;
+    }
+    .hv-body { padding: 16px 14px; font-size: 11.5px; line-height: 1.7; }
+    .hv-line { display: flex; gap: 8px; }
+    .hv-prompt { color: var(--orange); flex-shrink: 0; }
+    .hv-cmd { color: #e8e8e0; }
+    .hv-out { color: var(--text-3); padding-left: 16px; }
+    .hv-out.green { color: #4ade80; }
+    .hv-out.orange { color: var(--orange); }
+    .hv-out.dim { color: #444; }
+    .hv-separator { height: 1px; background: var(--line); margin: 10px 0; }
+
+    /* ── SECTION BASE ───────────────────────────────────────────── */
+    .section {
+      border-bottom: 1px solid var(--line);
+      padding: 80px 28px;
+    }
+    .section-inner {
+      max-width: 1080px; margin: 0 auto;
+    }
+
+    /* ── FEATURE SECTIONS — Linear style ───────────────────────── */
+    .feat-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .feat-section.reverse { direction: rtl; }
+    .feat-section.reverse > * { direction: ltr; }
+
+    .feat-number {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--text-3);
+      letter-spacing: .1em; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .feat-number::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--line);
+    }
+    .feat-h {
+      font-size: clamp(22px, 3.5vw, 36px);
+      font-weight: 600; letter-spacing: -.03em;
+      color: #fff; line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .feat-p {
+      font-size: 14px; font-weight: 300;
+      color: var(--text-2); line-height: 1.75;
+      margin-bottom: 20px; max-width: 380px;
+    }
+    .feat-link {
+      font-family: var(--mono);
+      font-size: 11.5px; color: var(--orange);
+      text-decoration: none; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: gap .12s;
+    }
+    .feat-link:hover { gap: 10px; }
+
+    /* Feature visual panel */
+    .feat-panel {
+      background: var(--bg-1);
+      border: 1px solid var(--line-2);
+      border-radius: 6px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 11.5px;
+    }
+    .fp-header {
+      height: 34px; background: var(--bg-2);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center;
+      padding: 0 14px;
+    }
+    .fp-header span {
+      font-size: 10.5px; color: var(--text-3);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .fp-badge {
+      margin-left: auto; font-size: 9.5px;
+      background: var(--orange-dim);
+      border: 1px solid rgba(242,108,30,.25);
+      color: var(--orange);
+      padding: 2px 7px; border-radius: 3px;
+      letter-spacing: .06em;
+    }
+    .fp-body { padding: 14px; display: flex; flex-direction: column; gap: 3px; }
+    .fp-row {
+      display: flex; align-items: center;
+      padding: 6px 8px; border-radius: 4px;
+      gap: 10px; transition: background .1s;
+      cursor: default;
+    }
+    .fp-row:hover { background: var(--bg-3); }
+    .fp-row.active { background: var(--bg-3); }
+    .fp-icon {
+      width: 16px; height: 16px; border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .fp-icon svg { width: 10px; height: 10px; }
+    .fp-name { color: var(--text); font-size: 11.5px; flex: 1; }
+    .fp-meta { color: var(--text-3); font-size: 10.5px; }
+    .fp-tag {
+      font-size: 9.5px; padding: 1px 6px; border-radius: 3px;
+      border: 1px solid var(--line-2); color: var(--text-3);
+    }
+    .fp-divider { height: 1px; background: var(--line); margin: 6px 0; }
+
+    /* Roles panel */
+    .role-row {
+      display: flex; align-items: center;
+      padding: 5px 8px; border-radius: 4px; gap: 8px;
+    }
+    .role-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .role-name { color: var(--text); font-size: 11.5px; flex: 1; }
+    .role-perm {
+      font-size: 9.5px; color: var(--text-3);
+      border: 1px solid var(--line); padding: 1px 6px; border-radius: 3px;
+    }
+
+    /* ── COMMANDS GRID ─────────────────────────────────────────── */
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .cmd-cell {
+      background: var(--bg-1);
+      padding: 18px 16px;
+      transition: background .1s;
+    }
+    .cmd-cell:hover { background: var(--bg-2); }
+    .cmd-cell-name {
+      font-family: var(--mono);
+      font-size: 11.5px; color: var(--orange);
+      margin-bottom: 5px;
+      display: flex; align-items: center; gap: 3px;
+    }
+    .cmd-cell-name .sl { opacity: .5; }
+    .cmd-cell-desc { font-size: 11.5px; color: var(--text-3); line-height: 1.5; }
+
+    /* ── PRICING ───────────────────────────────────────────────── */
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 48px;
+    }
+    .plan {
+      background: var(--bg-1);
+      padding: 28px 24px;
+      position: relative;
+    }
+    .plan.hi { background: var(--bg-2); }
+    .plan-accent {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--orange);
+    }
+    .plan-tier {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 12px;
+    }
+    .plan-price {
+      font-size: 32px; font-weight: 600;
+      letter-spacing: -.04em; color: #fff;
+      line-height: 1; margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .plan-price sup {
+      font-size: 14px; font-weight: 400;
+      vertical-align: super; letter-spacing: 0;
+    }
+    .plan-cadence {
+      font-size: 11.5px; color: var(--text-3);
+      margin-bottom: 20px; font-family: var(--mono);
+    }
+    .plan-hr { height: 1px; background: var(--line); margin-bottom: 18px; }
+    .plan-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 24px;
+    }
+    .plan-list li {
+      font-size: 12.5px; color: var(--text-2);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .plan-list li .dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--orange); flex-shrink: 0; margin-top: 7px;
+    }
+    .plan-btn {
+      display: block; width: 100%; text-align: center;
+      font-family: var(--f); font-size: 12.5px; font-weight: 500;
+      padding: 9px; border-radius: 5px;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all .12s;
+    }
+    .plan-btn-line {
+      border: 1px solid var(--line-2);
+      background: transparent; color: var(--text-2);
+    }
+    .plan-btn-line:hover { border-color: var(--text-3); color: var(--text); }
+    .plan-btn-fill { background: var(--orange); color: #fff; }
+    .plan-btn-fill:hover { background: var(--orange-d); }
+
+    /* ── BOTTOM CTA ────────────────────────────────────────────── */
+    .cta {
+      padding: 100px 28px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta::before {
+      content: '';
+      position: absolute; top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(242,108,30,.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta h2 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 600; letter-spacing: -.04em;
+      color: #fff; line-height: 1.05;
+      margin-bottom: 14px;
+    }
+    .cta p {
+      font-size: 14px; font-weight: 300;
+      color: var(--text-2); margin-bottom: 32px;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 20px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 7px; }
+    .footer-brand img { width: 16px; height: 16px; opacity: .35; }
+    .footer-brand span { font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: .05em; }
+    .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; }
+    .footer-nav a { font-size: 11.5px; color: var(--text-3); text-decoration: none; padding: 3px 10px; transition: color .12s; }
+    .footer-nav a:hover { color: var(--orange); }
+    .footer-copy { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); text-align: right; }
+
+    /* ── EYEBROW LABEL ─────────────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 10.5px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-3);
+      display: block; margin-bottom: 12px;
+    }
+    .sh {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 600; letter-spacing: -.035em;
+      color: #fff; line-height: 1.1; margin-bottom: 12px;
+    }
+    .sp {
+      font-size: 14px; font-weight: 300;
+      color: var(--text-2); line-height: 1.7;
+      max-width: 400px; margin-bottom: 40px;
+    }
+
+    /* mobile */
+    @media(max-width:1024px){
+      .hero-visual { display: none; }
+      .feat-section { grid-template-columns: 1fr; gap: 40px; }
+      .feat-section.reverse { direction: ltr; }
+      .cmd-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media(max-width:640px){
+      .nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 0 16px 64px; }
+      .section { padding: 60px 16px; }
+      .price-grid { grid-template-columns: 1fr; }
+      .footer { grid-template-columns: 1fr; text-align: center; gap: 12px; padding: 20px 16px; }
+      .footer-nav { justify-content: center; }
+      .footer-copy { text-align: center; }
+      .cmd-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
+      .hero h1 { font-size: 36px; }
+      .cta { padding: 72px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="data:image/png;base64,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" alt="Architect"/>
+    <span class="nav-logo-name">Architect</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="commands.html">Comandos</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="index.html#pricing">Planos</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="about.html">Sobre</a></li>
+  </ul>
+  <div class="nav-end">
+    <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="nav-btn nav-btn-ghost">Discord</a>
+    <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="nav-btn nav-btn-orange">Adicionar bot</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Terminal mockup -->
+  <div class="hero-visual">
+    <div class="hv-bar">
+      <div class="hv-dot hv-dot-r"></div>
+      <div class="hv-dot hv-dot-y"></div>
+      <div class="hv-dot hv-dot-g"></div>
+      <span class="hv-title">architect — geração premium</span>
+    </div>
+    <div class="hv-body">
+      <div class="hv-line"><span class="hv-prompt">→</span><span class="hv-cmd">/criar_servidor prompt: "Servidor de CS2"</span></div>
+      <div class="hv-out dim">——————————————————————————</div>
+      <div class="hv-out orange">✦ Interpretando prompt (Premium)...</div>
+      <div class="hv-out">[CARGOS] Gerando hierarquia...</div>
+      <div class="hv-out green">✓ 24 cargos gerados</div>
+      <div class="hv-out">[PALETA] Refinando cores...</div>
+      <div class="hv-out green">✓ Paleta refinada com sucesso</div>
+      <div class="hv-out">[ESTRUTURA] Projetando categorias...</div>
+      <div class="hv-out green">✓ 11 categorias · 47 canais</div>
+      <div class="hv-out">[REGRAS] Redigindo regras...</div>
+      <div class="hv-out green">✓ Regras aplicadas</div>
+      <div class="hv-out">[BOAS-VINDAS] Redigindo mensagem...</div>
+      <div class="hv-out green">✓ Mensagem gerada</div>
+      <div class="hv-separator"></div>
+      <div class="hv-out orange">✦ Estrutura pronta — aguardando confirmação</div>
+    </div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Velroc &mdash; v2.1.0</p>
+    <h1>The Discord<br/>server building<br/><span class="dim">system.</span></h1>
+    <p class="hero-sub">Built for communities that demand structure. Generate complete server architectures with AI — roles, categories, channels, rules.</p>
+    <div class="hero-cta">
+      <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="btn-hero btn-hero-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.879 19.879 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Add to Discord
+      </a>
+      <a href="#features" class="btn-hero btn-hero-ghost">Ver funcionalidades</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-val orange">AI</div>
+        <div class="hstat-label">Powered by Mistral</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val">22+</div>
+        <div class="hstat-label">Comandos</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val">3</div>
+        <div class="hstat-label">Planos</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val">v2.1</div>
+        <div class="hstat-label">Versão atual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1.0 CREATION -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="feat-section">
+      <div>
+        <div class="feat-number">1.0 &nbsp;&nbsp;&nbsp; Create</div>
+        <h2 class="feat-h">Server architecture,<br/>generated.</h2>
+        <p class="feat-p">Describe your community in plain text. Architect generates a complete structure — role hierarchy, categories, channels, topics, slowmodes, and rules — in under 30 seconds.</p>
+        <a href="commands.html" class="feat-link">Comandos disponíveis &rarr;</a>
+      </div>
+      <div class="feat-panel">
+        <div class="fp-header">
+          <span>Estrutura Gerada</span>
+          <span class="fp-badge">PREMIUM</span>
+        </div>
+        <div class="fp-body">
+          <div class="fp-row active">
+            <div class="fp-icon" style="background:rgba(242,108,30,.12);color:var(--orange)"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="10" height="10" rx="1"/><path d="M1 4h10M4 12V4"/></svg></div>
+            <span class="fp-name">╭──── 📣 ✦ Informações</span>
+            <span class="fp-meta">3 canais</span>
+          </div>
+          <div class="fp-row">
+            <div class="fp-icon" style="background:rgba(255,255,255,.04)"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4"/><path d="M6 4v2l1.5 1.5"/></svg></div>
+            <span class="fp-name" style="color:var(--text-2)">╭──── 🎮 ✦ Competitivo</span>
+            <span class="fp-meta">7 canais</span>
+          </div>
+          <div class="fp-row">
+            <div class="fp-icon" style="background:rgba(255,255,255,.04)"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 6h10M6 1l4 5-4 5"/></svg></div>
+            <span class="fp-name" style="color:var(--text-2)">╭──── 🔊 ✦ Partidas</span>
+            <span class="fp-meta">6 canais</span>
+          </div>
+          <div class="fp-row">
+            <div class="fp-icon" style="background:rgba(255,255,255,.04)"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1v10M1 6h10"/></svg></div>
+            <span class="fp-name" style="color:var(--text-2)">╭──── 💬 ✦ Comunidade</span>
+            <span class="fp-meta">5 canais</span>
+          </div>
+          <div class="fp-divider"></div>
+          <div style="padding:4px 8px;display:flex;justify-content:space-between">
+            <span style="font-size:10.5px;color:var(--text-3)">Total</span>
+            <span style="font-size:10.5px;color:var(--orange)">11 cats · 47 canais · 24 cargos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.0 ROLES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="feat-section reverse">
+      <div>
+        <div class="feat-number">2.0 &nbsp;&nbsp;&nbsp; Hierarchy</div>
+        <h2 class="feat-h">Role systems<br/>that make sense.</h2>
+        <p class="feat-p">The AI understands your server's culture. It generates role tiers with precise permissions, a coherent color system, and names that fit your theme — not generic placeholders.</p>
+        <a href="index.html#pricing" class="feat-link">Ver planos Premium &rarr;</a>
+      </div>
+      <div class="feat-panel">
+        <div class="fp-header">
+          <span>Hierarquia de Cargos</span>
+          <span class="fp-badge">24 CARGOS</span>
+        </div>
+        <div class="fp-body">
+          <div class="role-row"><div class="role-dot" style="background:#f1c40f"></div><span class="role-name">👑 Fundador</span><span class="role-perm">ADMIN</span></div>
+          <div class="role-row"><div class="role-dot" style="background:#e74c3c"></div><span class="role-name">⚔️ Head Moderador</span><span class="role-perm">BAN + KICK</span></div>
+          <div class="role-row"><div class="role-dot" style="background:#e67e22"></div><span class="role-name">🛡️ Moderador</span><span class="role-perm">KICK + MSG</span></div>
+          <div class="role-row"><div class="role-dot" style="background:#3498db"></div><span class="role-name">🎯 IGL</span><span class="role-perm">—</span></div>
+          <div class="role-row"><div class="role-dot" style="background:#9b59b6"></div><span class="role-name">💎 Pro Player</span><span class="role-perm">—</span></div>
+          <div class="role-row"><div class="role-dot" style="background:#27ae60"></div><span class="role-name">✅ Membro</span><span class="role-perm">—</span></div>
+          <div class="fp-divider"></div>
+          <div class="role-row"><div class="role-dot" style="background:#636e72"></div><span class="role-name" style="color:var(--text-3)">🔇 Silenciado</span><span class="role-perm">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.0 PROTECT -->
+<section class="section">
+  <div class="section-inner">
+    <div class="feat-section">
+      <div>
+        <div class="feat-number">3.0 &nbsp;&nbsp;&nbsp; Protect</div>
+        <h2 class="feat-h">Anti-nuke<br/>and backup.</h2>
+        <p class="feat-p">Real-time monitoring detects mass-deletion events within a 10-second window. Instant alerts. Full backup and one-command restore. Your server structure is never permanently lost.</p>
+        <a href="commands.html" class="feat-link">/proteger, /backup, /restaurar &rarr;</a>
+      </div>
+      <div class="feat-panel">
+        <div class="fp-header">
+          <span>Anti-Nuke Log</span>
+          <span class="fp-badge" style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.25);color:#f87171">ALERTA</span>
+        </div>
+        <div class="fp-body" style="font-family:var(--mono);font-size:11px;gap:4px">
+          <div style="color:var(--text-3)">08:47:01 — Protection ativo</div>
+          <div style="color:var(--text-3)">08:52:14 — Canal deletado: #geral</div>
+          <div style="color:var(--text-3)">08:52:15 — Canal deletado: #anuncios</div>
+          <div style="color:var(--text-3)">08:52:15 — Canal deletado: #regras</div>
+          <div style="color:#f87171">08:52:15 — ⚠ NUKE DETECTADO (3 ações/10s)</div>
+          <div style="color:#f87171">08:52:15 — Alerta enviado para #avisos</div>
+          <div class="fp-divider" style="margin:8px 0"></div>
+          <div style="color:#4ade80">08:52:18 — /restaurar executado</div>
+          <div style="color:#4ade80">08:52:22 — 47 canais restaurados ✓</div>
+          <div style="color:#4ade80">08:52:23 — 24 cargos restaurados ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMANDS GRID -->
+<section class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Comandos</span>
+    <h2 class="sh">22 comandos.<br/>Tudo no mesmo bot.</h2>
+    <p class="sp">Criação com IA, backup, proteção, moderação e administração — sem instalar nada além do Architect.</p>
+    <div class="cmd-grid">
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>criar_servidor</div><div class="cmd-cell-desc">Gera servidor completo com IA</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>template</div><div class="cmd-cell-desc">Aplica template pré-definido</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>backup</div><div class="cmd-cell-desc">Salva estrutura atual</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>restaurar</div><div class="cmd-cell-desc">Restaura do backup</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>proteger</div><div class="cmd-cell-desc">Ativa Anti-Nuke</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>ban</div><div class="cmd-cell-desc">Bane membro</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>mute</div><div class="cmd-cell-desc">Silencia por período</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>clear</div><div class="cmd-cell-desc">Apaga mensagens</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>lock</div><div class="cmd-cell-desc">Tranca canal</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>slowmode</div><div class="cmd-cell-desc">Modo lento</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>cargo_criar</div><div class="cmd-cell-desc">Cria cargo manualmente</div></div>
+      <div class="cmd-cell"><div class="cmd-cell-name"><span class="sl">/</span>usuarios</div><div class="cmd-cell-desc">Stats de uso diário</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-inner">
+    <span class="eyebrow">Planos</span>
+    <h2 class="sh">Gratuito para começar.</h2>
+    <p class="sp" style="margin-bottom:0">Premium desbloqueia geração ilimitada, paleta de cores por IA, regras automáticas e fila prioritária.</p>
+    <div class="price-grid">
+      <div class="plan">
+        <div class="plan-tier">Free</div>
+        <div class="plan-price">R$ 0</div>
+        <div class="plan-cadence">para sempre</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-list">
+          <li><span class="dot"></span>3 criações por dia</li>
+          <li><span class="dot"></span>8–14 cargos gerados</li>
+          <li><span class="dot"></span>5+ categorias</li>
+          <li><span class="dot"></span>Templates prontos</li>
+          <li><span class="dot"></span>Backup e restauração</li>
+          <li><span class="dot"></span>Moderação completa</li>
+        </ul>
+        <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="plan-btn plan-btn-line">Começar grátis</a>
+      </div>
+      <div class="plan hi">
+        <div class="plan-accent"></div>
+        <div class="plan-tier">Premium Mensal</div>
+        <div class="plan-price"><sup>R$</sup>15,99</div>
+        <div class="plan-cadence">por mês — ou R$ 5,99 / semana</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-list">
+          <li><span class="dot"></span>Criações ilimitadas</li>
+          <li><span class="dot"></span>18–30 cargos gerados</li>
+          <li><span class="dot"></span>10–14 categorias</li>
+          <li><span class="dot"></span>Paleta de cores por IA</li>
+          <li><span class="dot"></span>Regras automáticas</li>
+          <li><span class="dot"></span>Tópicos elaborados por contexto</li>
+          <li><span class="dot"></span>Slowmode inteligente</li>
+          <li><span class="dot"></span>Fila prioritária</li>
+        </ul>
+        <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="plan-btn plan-btn-fill">Obter Premium</a>
+      </div>
+      <div class="plan">
+        <div class="plan-tier">Premium Anual</div>
+        <div class="plan-price"><sup>R$</sup>75,99</div>
+        <div class="plan-cadence">por ano — economize R$ 116</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-list">
+          <li><span class="dot"></span>Tudo do Mensal</li>
+          <li><span class="dot"></span>Backup automático a cada 30min</li>
+          <li><span class="dot"></span>Melhor custo-benefício</li>
+        </ul>
+        <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="plan-btn plan-btn-line">Assinar anual</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-inner">
+    <h2>Build your server.<br/>The right way.</h2>
+    <p>Adicione o Architect e crie uma estrutura profissional agora.</p>
+    <a href="https://discord.gg/Fd48hWuZRr" target="_blank" rel="noopener" class="btn-hero btn-hero-primary">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.879 19.879 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Add to Discord
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">
+    <img src="data:image/png;base64,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" alt="Architect"/>
+    <span>Architect / Velroc</span>
+  </div>
+  <nav class="footer-nav">
+    <a href="commands.html">Comandos</a>
+    <a href="changelog.html">Changelog</a>
+    <a href="status.html">Status</a>
+    <a href="about.html">Sobre</a>
+    <a href="faq.html">FAQ</a>
+    <a href="terms.html">Termos</a>
+    <a href="privacy.html">Privacidade</a>
+  </nav>
+  <span class="footer-copy">&copy; 2026 Velroc</span>
+</footer>
+
+</body>
+</html>
